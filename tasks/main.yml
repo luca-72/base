@@ -1,0 +1,21 @@
+---
+# essential tasks. should run on all nodes
+- include_vars: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family != 'Debian'
+
+- include: Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: creating devops group
+  group: name=devops state=present
+
+- name: create devops user
+  user: name=devops comment="DevOPs User" uid=2001 group=devops
+# - name: install htop AptPackage
+#   action: apt name=htop state=present update_cache=yes
+# - name: install htop YumPackage
+#   action: yum name=htop state=present update_cache=yes
+#   ignore_errors: yes
